@@ -3,27 +3,44 @@
 
 int tabela[TAM];
 
-int funcao_hash(int valor) 
+int hash_function(int value) 
 {
-	return valor % TAM;
+	return value % TAM;
 }
 
-void inicializar_tabela() 
+void init_table() 
 {
 	int i;
 	for (i = 0; i < TAM; i++)
 		tabela[i] = 0;
 }
 
-void inserir(int valor) 
+void insert(int value) 
 {
-	int pos = funcao_hash(valor);
+	int pos = hash_function(value);
 	while (tabela[pos] != 0)
-		pos = funcao_hash(pos + 1);
-	tabela[pos] = valor;
+		pos = hash_function(pos + 1);
+	tabela[pos] = value;
 }
 
-void print() 
+void remove_table(int value) 
+{
+	int pos = search_table(value);
+	if (pos != -1) tabela[pos] = 0;
+}
+
+int search_table(int value) 
+{
+	int pos = hash_function(value);
+	while (tabela[pos] != 0) 
+	{
+		if (tabela[pos] == value) return pos;
+		pos = hash_function(pos + 1);
+	}
+	return -1;
+}
+
+void print_table() 
 {
 	int i;
 	for (i = 0; i < TAM; i++) 
@@ -91,9 +108,10 @@ int calcula(char op)
 	}
 }
 
+/*
 int main()
 {
-	inicializar_tabela();
+	init_table();
 	printf("\nCALCULADORA\n");
 	
 	int num;
@@ -102,7 +120,7 @@ int main()
 		printf("Digite um numero:\n");
 		scanf("%d", &num);
 		if (num == 0) break;
-		inserir(num);
+		insert(num);
 	}
 	
 	printf("Digite uma operacao:\n");
@@ -110,7 +128,23 @@ int main()
 	scanf(" %c", &op);
 	
 	int result = calcula(op);
-	printf("%d", result);
+	printf("%d\n", result);
 	
+	return (0);
+}
+*/
+
+int main(void) 
+{
+	init_table();
+
+	insert(50);
+	insert(120);
+	insert(31);
+
+	print_table();
+
+	printf("position: %d\n", search_table(32));
+
 	return (0);
 }
